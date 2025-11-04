@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "codeblock-export",
+	"name": "Codeblock Export",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"description": "Allows exporting code blocks to external files for use.",
+	"author": "Luke Waehner",
+	"authorUrl": "https://lwaehner.com",
 	"fundingUrl": "https://obsidian.md/pricing",
 	"isDesktopOnly": false
 }
