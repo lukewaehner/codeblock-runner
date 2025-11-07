@@ -73,10 +73,30 @@ export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 				// Add each setting for this language
 				if (executor.settings) {
 					for (const langSetting of executor.settings) {
-						new Setting(containerEl)
+						const setting = new Setting(containerEl)
 							.setName(langSetting.name)
-							.setDesc(langSetting.description)
-							.addText((text) =>
+							.setDesc(langSetting.description);
+
+						// Use textarea for multiline settings (like custom commands)
+						if (langSetting.isTextArea) {
+							setting.addTextArea((text) =>
+								text
+									.setPlaceholder(
+										langSetting.placeholder ||
+											langSetting.defaultValue
+									)
+									.setValue(
+										this.plugin.settings[langSetting.key] ||
+											langSetting.defaultValue
+									)
+									.onChange(async (value) => {
+										this.plugin.settings[langSetting.key] =
+											value;
+										await this.plugin.saveSettings();
+									})
+							);
+						} else {
+							setting.addText((text) =>
 								text
 									.setPlaceholder(
 										langSetting.placeholder ||
@@ -92,6 +112,7 @@ export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 										await this.plugin.saveSettings();
 									})
 							);
+						}
 					}
 				}
 			}

@@ -7,6 +7,7 @@ export interface LanguageSetting {
 	description: string; // Help text
 	defaultValue: string; // Default value
 	placeholder?: string; // Input placeholder
+	isTextArea?: boolean; // Use textarea for multiline input (e.g., custom commands)
 }
 
 export interface LanguageExecutor {

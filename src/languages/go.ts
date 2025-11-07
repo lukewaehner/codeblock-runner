@@ -6,9 +6,27 @@ export const GoExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "goCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run Go code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  compile first: go build -o {file}.out {file} && {file}.out {args}\n" +
+				"  with race detector: go run -race {file} {args}\n" +
+				"  gccgo: gccgo {file} -o {file}.out && {file}.out {args}",
+			defaultValue: "",
+			placeholder: "go build -o {file}.out {file} && {file}.out {args}",
+			isTextArea: true,
+		},
+		{
 			key: "goCommand",
 			name: "Go command",
-			description: "The Go command to use (e.g., go, or full path)",
+			description:
+				"The Go command to use (e.g., go, or full path). Only used if custom command is empty.",
 			defaultValue: "go",
 			placeholder: "go",
 		},

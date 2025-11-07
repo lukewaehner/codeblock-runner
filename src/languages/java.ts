@@ -6,16 +6,36 @@ export const JavaExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "javaCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to compile and run Java code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Note: Your code should have 'public class Main' for simple execution.\n\n" +
+				"Examples:\n" +
+				"  simple: cp {file} {dir}/Main.java && javac {dir}/Main.java && java -cp {dir} Main {args}\n" +
+				"  with maven: cd {dir} && mvn exec:java -Dexec.mainClass=Main -Dexec.args='{args}'",
+			defaultValue: "",
+			placeholder:
+				"cp {file} {dir}/Main.java && javac {dir}/Main.java && java -cp {dir} Main {args}",
+			isTextArea: true,
+		},
+		{
 			key: "javacCommand",
 			name: "Java compiler",
-			description: "The Java compiler to use (e.g., javac, or full path)",
+			description:
+				"The Java compiler to use (e.g., javac, or full path). Only used if custom command is empty.",
 			defaultValue: "javac",
 			placeholder: "javac",
 		},
 		{
 			key: "javaCommand",
 			name: "Java runtime",
-			description: "The Java runtime to use (e.g., java, or full path)",
+			description:
+				"The Java runtime to use (e.g., java, or full path). Only used if custom command is empty.",
 			defaultValue: "java",
 			placeholder: "java",
 		},

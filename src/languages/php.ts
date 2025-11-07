@@ -6,10 +6,27 @@ export const PHPExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "phpCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run PHP code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  with specific version: php8.2 {file} {args}\n" +
+				"  with opcache: php -d opcache.enable_cli=1 {file} {args}\n" +
+				"  hhvm: hhvm {file} {args}",
+			defaultValue: "",
+			placeholder: "php8.2 {file} {args}",
+			isTextArea: true,
+		},
+		{
 			key: "phpCommand",
 			name: "PHP command",
 			description:
-				"The command to use for executing PHP code (e.g., php, or full path)",
+				"The command to use for executing PHP code (e.g., php, or full path). Only used if custom command is empty.",
 			defaultValue: "php",
 			placeholder: "php",
 		},

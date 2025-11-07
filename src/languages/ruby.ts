@@ -6,10 +6,27 @@ export const RubyExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "rubyCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run Ruby code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  jruby: jruby {file} {args}\n" +
+				"  with warnings: ruby -w {file} {args}\n" +
+				"  bundled: bundle exec ruby {file} {args}",
+			defaultValue: "",
+			placeholder: "jruby {file} {args}",
+			isTextArea: true,
+		},
+		{
 			key: "rubyCommand",
 			name: "Ruby command",
 			description:
-				"The command to use for executing Ruby code (e.g., ruby, or full path)",
+				"The command to use for executing Ruby code (e.g., ruby, or full path). Only used if custom command is empty.",
 			defaultValue: "ruby",
 			placeholder: "ruby",
 		},

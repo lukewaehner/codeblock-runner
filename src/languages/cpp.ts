@@ -6,10 +6,27 @@ export const CppExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "cppCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to compile and run C++ code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  clang++: clang++ -std=c++20 {file} -o {file}.out && {file}.out {args}\n" +
+				"  g++ with warnings: g++ -std=c++17 -Wall -Wextra {file} -o {file}.out && {file}.out {args}",
+			defaultValue: "",
+			placeholder:
+				"clang++ -std=c++20 {file} -o {file}.out && {file}.out {args}",
+			isTextArea: true,
+		},
+		{
 			key: "cppCompiler",
 			name: "C++ compiler",
 			description:
-				"The C++ compiler to use (e.g., g++, clang++, or full path)",
+				"The C++ compiler to use (e.g., g++, clang++, or full path). Only used if custom command is empty.",
 			defaultValue: "g++",
 			placeholder: "g++",
 		},
@@ -17,7 +34,7 @@ export const CppExecutor: LanguageExecutor = {
 			key: "cppFlags",
 			name: "C++ compiler flags",
 			description:
-				"Additional flags to pass to the compiler (e.g., -std=c++17 -O2)",
+				"Additional flags to pass to the compiler (e.g., -std=c++17 -O2). Only used if custom command is empty.",
 			defaultValue: "-std=c++17",
 			placeholder: "-std=c++17",
 		},

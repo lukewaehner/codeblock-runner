@@ -101,6 +101,36 @@ The settings page allows you to configure execution parameters and language-spec
 
 Each supported language has its own configuration section where you can specify the command or path to use for execution.
 
+#### Custom commands
+
+Many languages support custom command templates, giving you complete control over how code is compiled and executed. This is useful if you want to:
+
+-   Use rustc instead of cargo for Rust
+-   Switch between gcc and clang for C/C++
+-   Add custom compiler flags or build steps
+-   Use your own build system or workflow
+
+Custom commands support template variables that are automatically replaced:
+
+-   `{file}` - Path to the temporary file containing your code
+-   `{args}` - Command-line arguments passed to your code
+-   `{dir}` - Directory containing the temporary file
+
+**Example custom commands:**
+
+```bash
+# Rust with rustc instead of cargo
+rustc {file} -o {file}.out && {file}.out {args} && rm {file}.out
+
+# C++ with clang and warnings
+clang++ -std=c++20 -Wall -Wextra {file} -o {file}.out && {file}.out {args}
+
+# C with gcc in debug mode
+gcc -std=c11 -g -O0 {file} -o {file}.out && {file}.out {args}
+```
+
+To use custom commands, find the **Custom command (optional)** setting for your language in **Settings → Codeblock Runner → Language Settings**. Leave it empty to use the default behavior.
+
 #### Python
 
 **Python command**: The command to use for executing Python code. Default is `python3`. You can specify a full path (e.g., `/usr/local/bin/python3.11`) or a different command (e.g., `python`).
@@ -123,9 +153,11 @@ Each supported language has its own configuration section where you can specify 
 
 #### Rust
 
-**Rust compiler**: The Rust compiler to use for compiling Rust code. Default is `rustc`. You can specify a full path if needed.
+**Cargo command**: The Cargo command to use for building and running Rust code. Default is `cargo`. You can specify a full path if needed.
 
-**Rust compiler flags**: Additional flags to pass to rustc. Default is empty. You can specify optimization flags like `-O` or edition flags like `--edition 2021`.
+**Rust edition**: The Rust edition to use in the generated Cargo.toml. Default is `2021`. You can specify `2018` or `2015` if needed.
+
+Note: The plugin uses `cargo run` which automatically creates a minimal Cargo project, builds, and runs your code. This is the standard way to run Rust code and supports dependencies if you add them to the generated Cargo.toml (though for simple snippets, no dependencies are needed).
 
 #### TypeScript
 
@@ -180,7 +212,7 @@ The plugin currently supports the following languages:
 -   **C**: Requires a C compiler (gcc or clang) installed and in PATH (or configure path in settings)
 -   **C++**: Requires a C++ compiler (g++ or clang++) installed and in PATH (or configure path in settings)
 -   **Go**: Requires Go installed and in PATH (or configure path in settings)
--   **Rust**: Requires Rust compiler (rustc) installed and in PATH (or configure path in settings)
+-   **Rust**: Requires Cargo (Rust's package manager) installed and in PATH (or configure path in settings)
 -   **Ruby**: Requires Ruby installed and in PATH (or configure path in settings)
 -   **PHP**: Requires PHP installed and in PATH (or configure path in settings)
 -   **Shell**: Requires bash, zsh, or sh (typically pre-installed on Unix-based systems)

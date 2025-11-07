@@ -2,11 +2,52 @@
 
 This directory contains modular language executors. Each language is self-contained in its own file.
 
+## Custom Command System
+
+**Every language should support custom commands.** This gives users complete flexibility to:
+
+-   Use alternative runtimes (e.g., bun instead of node, pypy instead of python)
+-   Switch between compilers (e.g., gcc vs clang, rustc vs cargo)
+-   Add custom flags (e.g., optimization, warnings, debugging)
+-   Use their own build systems or workflows
+
+### How it works:
+
+1. User sets a custom command in settings with template variables: `{file}`, `{args}`, `{dir}`
+2. Executor checks for `{language}CustomCommand` setting (e.g., `pythonCustomCommand`)
+3. If set, creates temp file and substitutes variables: `{file}` → `/tmp/code.py`
+4. Executes via `/bin/sh -c` with the generated command
+5. If empty, falls back to language's default `buildCommand` behavior
+
+### Template Variables:
+
+-   `{file}` - Full path to temp file containing the code (e.g., `/tmp/obsidian-code-123456.py`)
+-   `{args}` - User's command-line arguments as a string (e.g., `arg1 arg2 arg3`)
+-   `{dir}` - Directory containing the temp file (e.g., `/tmp`)
+
+### Example Custom Commands:
+
+```bash
+# Python with PyPy
+pypy3 {file} {args}
+
+# Rust with rustc instead of cargo
+rustc {file} -o {file}.out && {file}.out {args} && rm {file}.out
+
+# C++ with clang and warnings
+clang++ -std=c++20 -Wall -Wextra {file} -o {file}.out && {file}.out {args}
+
+# JavaScript with Bun
+bun run {file} {args}
+```
+
 ## Adding a New Language
 
 To add support for a new language, follow these 3 steps:
 
 ### 1. Create a new file: `src/languages/your-language.ts`
+
+**Important**: Always add a custom command setting as the first setting. This gives users complete control over how code is executed.
 
 ````typescript
 import { LanguageExecutor } from "./types";
@@ -18,19 +59,37 @@ export const YourLanguageExecutor: LanguageExecutor = {
 	// Display name (shown in settings)
 	name: "JavaScript",
 
-	// Optional: Settings this language needs
+	// Settings this language needs
 	settings: [
+		// CUSTOM COMMAND (ALWAYS ADD THIS FIRST)
+		{
+			key: "javascriptCustomCommand", // Must end with "CustomCommand"
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run JavaScript code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  bun: bun run {file} {args}\n" +
+				"  deno: deno run {file} {args}",
+			defaultValue: "",
+			placeholder: "bun run {file} {args}",
+			isTextArea: true, // Use textarea for multiline commands
+		},
+		// DEFAULT SETTINGS (Used when custom command is empty)
 		{
 			key: "nodeCommand", // Unique key for this setting
 			name: "Node.js command",
 			description:
-				"The command to use for executing JavaScript (e.g., node, nodejs)",
+				"The command to use for executing JavaScript (e.g., node, nodejs). Only used if custom command is empty.",
 			defaultValue: "node",
 			placeholder: "node",
 		},
 	],
 
-	// Build the execution command
+	// Build the execution command (only used if custom command is NOT set)
 	buildCommand: (settings, code, userArgs) => {
 		// Option 1: Execute with inline code
 		if (userArgs.length === 0) {
@@ -63,14 +122,14 @@ const LANGUAGE_EXECUTORS: LanguageExecutor[] = [
 ];
 ```
 
-### 3. Done! 🎉
+### 3. Finished
 
-That's it! The plugin will automatically:
+The plugin will automatically:
 
--   ✅ Register your language IDs (`javascript`, `js`)
--   ✅ Add settings to the Settings tab (if you defined any)
--   ✅ Show your language in the supported languages list
--   ✅ Execute code blocks with ` ```javascript` or ` ```js`
+-   Register your language IDs (`javascript`, `js`)
+-   Add settings to the Settings tab (if you defined any)
+-   Show your language in the supported languages list
+-   Execute code blocks with ` ```javascript` or ` ```js`
 
 ## Examples
 

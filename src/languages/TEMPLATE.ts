@@ -14,11 +14,29 @@ export const TemplateExecutor: LanguageExecutor = {
 	// Optional: Settings this language needs
 	// Remove this entire section if your language doesn't need configuration
 	settings: [
+		// CUSTOM COMMAND (RECOMMENDED): Let users define their own execution command
+		{
+			key: "yourLanguageCustomCommand", // Must end with "CustomCommand"
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run Your Language code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  your-lang {file} {args}\n" +
+				"  your-lang-alt --flag {file} {args}",
+			defaultValue: "",
+			placeholder: "your-lang-alt {file} {args}",
+			isTextArea: true, // Use textarea for multiline commands
+		},
+		// DEFAULT COMMAND: Used when custom command is empty
 		{
 			key: "yourLanguageCommand", // Unique key (e.g., "pythonCommand", "nodeCommand")
 			name: "Your Language command", // Display name in settings
 			description:
-				"The command to execute your language (e.g., your-lang, /usr/bin/your-lang)",
+				"The command to execute your language (e.g., your-lang, /usr/bin/your-lang). Only used if custom command is empty.",
 			defaultValue: "your-lang", // Default command
 			placeholder: "your-lang", // Placeholder text in input
 		},

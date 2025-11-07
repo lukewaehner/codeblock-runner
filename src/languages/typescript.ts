@@ -6,10 +6,28 @@ export const TypeScriptExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "typescriptCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run TypeScript code. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  bun: bun run {file} {args}\n" +
+				"  deno: deno run {file} {args}\n" +
+				"  tsx: tsx {file} {args}\n" +
+				"  compile with tsc: tsc {file} --outFile {file}.js && node {file}.js {args}",
+			defaultValue: "",
+			placeholder: "tsx {file} {args}",
+			isTextArea: true,
+		},
+		{
 			key: "tsNodeCommand",
 			name: "ts-node command",
 			description:
-				"The ts-node command to use for executing TypeScript (e.g., ts-node, npx ts-node, or full path)",
+				"The ts-node command to use for executing TypeScript (e.g., ts-node, npx ts-node, or full path). Only used if custom command is empty.",
 			defaultValue: "ts-node",
 			placeholder: "ts-node",
 		},

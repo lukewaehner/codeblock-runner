@@ -6,10 +6,27 @@ export const ShellExecutor: LanguageExecutor = {
 
 	settings: [
 		{
+			key: "shellCustomCommand",
+			name: "Custom command (optional)",
+			description:
+				"Custom shell command to run shell scripts. Leave empty to use default behavior.\n\n" +
+				"Available variables:\n" +
+				"  {file} - path to temp file with your code\n" +
+				"  {args} - command-line arguments\n" +
+				"  {dir} - directory containing temp file\n\n" +
+				"Examples:\n" +
+				"  zsh: /bin/zsh {file} {args}\n" +
+				"  bash with strict mode: bash -euo pipefail {file} {args}\n" +
+				"  fish: fish {file} {args}",
+			defaultValue: "",
+			placeholder: "/bin/zsh {file} {args}",
+			isTextArea: true,
+		},
+		{
 			key: "shellCommand",
 			name: "Shell command",
 			description:
-				"The shell to use for executing scripts (e.g., /bin/bash, /bin/zsh, or /bin/sh)",
+				"The shell to use for executing scripts (e.g., /bin/bash, /bin/zsh, or /bin/sh). Only used if custom command is empty.",
 			defaultValue: "/bin/bash",
 			placeholder: "/bin/bash",
 		},
