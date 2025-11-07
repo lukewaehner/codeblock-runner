@@ -1,8 +1,76 @@
-/*
+/* Codeblock Runner Output Modal Styles */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.codeblock-runner-output .modal-content {
+	max-width: 800px;
+	width: 90vw;
+}
 
-If your plugin does not need CSS, delete this file.
+.codeblock-runner-output .output-container {
+	margin: 1em 0;
+}
 
-*/
+.codeblock-runner-output .output-section {
+	margin-bottom: 1.5em;
+}
+
+.codeblock-runner-output .output-section h3 {
+	margin: 0 0 0.5em 0;
+	font-size: 1em;
+	font-weight: 600;
+	color: var(--text-normal);
+}
+
+.codeblock-runner-output .output-section pre {
+	margin: 0;
+	padding: 1em;
+	background-color: var(--background-primary-alt);
+	border-radius: 4px;
+	overflow: auto;
+	max-height: 400px;
+}
+
+.codeblock-runner-output .output-section code {
+	font-family: var(--font-monospace);
+	font-size: 0.9em;
+	color: var(--text-normal);
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.codeblock-runner-output .output-error h3 {
+	color: var(--text-error);
+}
+
+.codeblock-runner-output .output-error pre {
+	background-color: var(--background-modifier-error);
+	border: 1px solid var(--background-modifier-error-hover);
+}
+
+.codeblock-runner-output .output-info {
+	margin-top: 1em;
+	padding: 0.5em 0;
+	font-size: 0.9em;
+	color: var(--text-muted);
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.codeblock-runner-output .output-info div {
+	margin: 0.25em 0;
+}
+
+.codeblock-runner-output .exit-code-error {
+	color: var(--text-error);
+	font-weight: 600;
+}
+
+.codeblock-runner-output .button-container {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 1em;
+	padding-top: 1em;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.codeblock-runner-output .button-container button {
+	padding: 0.5em 1.5em;
+}

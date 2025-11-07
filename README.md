@@ -1,94 +1,156 @@
-# Obsidian Sample Plugin
+# Codeblock Runner
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Execute code blocks directly in Obsidian and view output in a modal window. Perfect for students taking coding classes, quick prototyping, or testing small snippets.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+-   **One-Click Execution**: Adds a "Run Code" button to every code block in reading view
+-   **Instant Output**: View stdout, stderr, and execution time in a dismissible modal
+-   **Language Support**: Currently supports Python (more languages coming soon)
+-   **Error Handling**: Clearly displays errors and exit codes
+-   **Timeout Protection**: Prevents infinite loops from hanging Obsidian
 
-## First time developing plugins?
+## Use Cases
 
-Quick starting guide for new plugin devs:
+Perfect for:
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+-   Testing code snippets while taking notes in coding classes
+-   Quick Python experiments without leaving your notes
+-   Learning to code with immediate feedback
+-   Prototyping small scripts
+-   Running examples from tutorials and documentation
 
-## Releasing new releases
+## Installation
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+### Manual Installation
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+1. Download `main.js`, `manifest.json`, and `styles.css` from releases
+2. Create a folder `<VaultFolder>/.obsidian/plugins/codeblock-runner/`
+3. Copy the downloaded files into that folder
+4. Reload Obsidian
+5. Enable the plugin in **Settings → Community plugins**
 
-## Adding your plugin to the community plugin list
+## Usage
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### Running Code
 
-## How to use
+1. Write a code block in your note with a supported language (e.g., `python`)
+2. Switch to **Reading View**
+3. Click the **"Run Code"** button that appears on the code block
+4. View the output in the modal that appears
+5. Click outside the modal or press `Escape` to dismiss it
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### Example
 
-## Manually installing the plugin
+````markdown
+```python
+print("Hello from Obsidian!")
+for i in range(5):
+    print(f"Count: {i}")
+```
+````
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+Click "Run Code" and you'll see:
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint ./src/`
+```
+Hello from Obsidian!
+Count: 0
+Count: 1
+Count: 2
+Count: 3
+Count: 4
 
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+Executed in 0.05s
 ```
 
-If you have multiple URLs, you can also do:
+### Error Handling
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+If your code has an error, it will be displayed in the output:
+
+````markdown
+```python
+print("This works")
+print(undefined_variable)
+```
+````
+
+Output:
+
+```
+This works
+Error: NameError: name 'undefined_variable' is not defined
+
+Exit code: 1
+Executed in 0.03s
 ```
 
-## API Documentation
+## Supported Languages
 
-See https://github.com/obsidianmd/obsidian-api
+-   ✅ **Python** - Requires Python installed and in PATH (or configure path in settings)
+-   🔜 **C** - Coming soon
+-   🔜 **C++** - Coming soon
+-   🔜 **Rust** - Coming soon
+
+## Settings
+
+### Python Path
+
+By default, the plugin uses `python3` from your system PATH. If you need to use a specific Python installation:
+
+1. Go to **Settings → Codeblock Runner**
+2. Set **Python Command** to your desired path (e.g., `/usr/local/bin/python3.11` or `python`)
+
+### Execution Timeout
+
+Configure the maximum time (in seconds) a code block can run before being terminated. Default is 30 seconds.
+
+## Requirements
+
+-   **Desktop only**: This plugin uses Node.js child_process APIs and is not compatible with mobile devices
+-   **Language Runtimes**: You must have the appropriate language runtime installed (e.g., Python, C compiler, etc.)
+
+## Security Note
+
+⚠️ **This plugin executes code on your system.** Only run code blocks from trusted sources. The code runs with the same permissions as Obsidian.
+
+## Known Limitations
+
+-   Desktop only (requires Node.js child_process)
+-   No stdin support (can't interact with running programs)
+-   No persistent state between executions
+-   Working directory is the vault root
+
+## Development
+
+### Setup
+
+```bash
+npm install
+```
+
+### Build
+
+```bash
+# Development (watch mode)
+npm run dev
+
+# Production build
+npm run build
+```
+
+### Manual Testing
+
+1. Build the plugin
+2. Copy `main.js`, `manifest.json`, and `styles.css` to `<Vault>/.obsidian/plugins/codeblock-runner/`
+3. Reload Obsidian and enable the plugin
+
+## Feedback & Contributions
+
+This is a personal project for coding classes, but feedback and contributions are welcome!
+
+-   **Issues**: [GitHub Issues](https://github.com/lukewaehner/codeblock-runner/issues)
+-   **Discussions**: [GitHub Discussions](https://github.com/lukewaehner/codeblock-runner/discussions)
+
+## License
+
+MIT

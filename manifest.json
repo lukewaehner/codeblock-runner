@@ -1,11 +1,10 @@
 {
-	"id": "codeblock-export",
-	"name": "Codeblock Export",
-	"version": "1.0.0",
+	"id": "codeblock-runner",
+	"name": "Codeblock Runner",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Allows exporting code blocks to external files for use.",
+	"description": "Execute code blocks directly in Obsidian and view output in a modal window.",
 	"author": "Luke Waehner",
 	"authorUrl": "https://lwaehner.com",
-	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
