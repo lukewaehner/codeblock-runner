@@ -30,10 +30,26 @@ export default class CodeBlockRunner extends Plugin {
 				const btn = document.createElement("button");
 				btn.textContent = "Run Code";
 				btn.className = "mod-cta";
+
+				// Check if single-line to avoid overlap with copy button
+				// In Reading View, just count newlines in the text content
+				const codeText = code.textContent || "";
+				const lineCount = codeText.trim().split("\n").length;
+				const isSingleLine = lineCount === 1;
+				console.log(
+					"[CodeRunner] Line count:",
+					lineCount,
+					isSingleLine
+				);
+				console.log(
+					"[CodeRunner] Code text:",
+					codeText.substring(0, 200) + "..."
+				);
+
 				Object.assign(btn.style, {
 					position: "absolute",
 					bottom: "5px",
-					right: "5px",
+					right: isSingleLine ? "35px" : "5px", // Offset for single-line blocks
 					fontSize: "12px",
 					zIndex: "10",
 					pointerEvents: "auto",

@@ -2,6 +2,7 @@ import { PluginExtractor } from "./types";
 
 // Code Styler plugin extractor
 // https://github.com/mayurankv/Obsidian-Code-Styler
+// Code Styler adds line numbers to the code blocks, extracting just the inner HTML will include the line numbers, breaking execution.
 export const CodeStylerExtractor: PluginExtractor = {
 	name: "Code Styler",
 	pluginId: "code-styler",
