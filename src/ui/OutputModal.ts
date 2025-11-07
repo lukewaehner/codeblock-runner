@@ -1,4 +1,4 @@
-import { App, Modal } from "obsidian";
+import { App, Modal, Notice } from "obsidian";
 import { ExecutionResult } from "../types";
 
 export class OutputModal extends Modal {
@@ -16,60 +16,90 @@ export class OutputModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass("codeblock-runner-output");
 
-		// Title
-		contentEl.createEl("h2", { text: `Output (${this.language})` });
-
-		// Create output container
-		const outputContainer = contentEl.createDiv({
-			cls: "output-container",
+		// Add keyboard shortcuts
+		this.scope.register([], "Escape", () => {
+			this.close();
+			return false;
 		});
 
-		// Stdout
+		this.scope.register(["Mod"], "c", () => {
+			this.copyAllOutput();
+			return false;
+		});
+
+		// Header with title and badge
+		const header = contentEl.createDiv({ cls: "output-header" });
+		header.createEl("h2", { text: `Output (${this.language})` });
+
+		// Status badge (top right)
+		const statusBadge = header.createEl("span", {
+			cls: "output-status-badge",
+		});
+
+		const executionTime = (this.result.executionTime / 1000).toFixed(2);
+
+		if (this.result.exitCode === 0 && !this.result.timedOut) {
+			statusBadge.addClass("status-success");
+			statusBadge.setText(`✓ Success • ${executionTime}s`);
+		} else if (this.result.timedOut) {
+			statusBadge.addClass("status-timeout");
+			statusBadge.setText(`⏱ Timeout • ${executionTime}s`);
+		} else {
+			statusBadge.addClass("status-error");
+			statusBadge.setText(`✗ Failed • Exit ${this.result.exitCode}`);
+		}
+
+		// Output content area
+		const contentArea = contentEl.createDiv({ cls: "output-content-area" });
+
+		// Stdout in container
 		if (this.result.stdout) {
-			const stdoutSection = outputContainer.createDiv({
-				cls: "output-section",
-			});
-			stdoutSection.createEl("h3", { text: "Output" });
-			const stdoutPre = stdoutSection.createEl("pre");
-			stdoutPre.createEl("code", { text: this.result.stdout });
+			const outputBox = contentArea.createDiv({ cls: "output-box" });
+			const pre = outputBox.createEl("pre");
+			pre.createEl("code", { text: this.result.stdout });
 		}
 
-		// Stderr
+		// Stderr in container with error styling
 		if (this.result.stderr) {
-			const stderrSection = outputContainer.createDiv({
-				cls: "output-section output-error",
+			const errorBox = contentArea.createDiv({
+				cls: "output-box output-box-error",
 			});
-			stderrSection.createEl("h3", {
-				text: this.result.timedOut ? "Timeout" : "Error",
-			});
-			const stderrPre = stderrSection.createEl("pre");
-			stderrPre.createEl("code", { text: this.result.stderr });
+			const pre = errorBox.createEl("pre");
+			pre.createEl("code", { text: this.result.stderr });
 		}
 
-		// Execution info
-		const infoSection = outputContainer.createDiv({ cls: "output-info" });
+		// Footer with buttons
+		const footer = contentEl.createDiv({ cls: "output-footer" });
 
-		if (this.result.exitCode !== null && this.result.exitCode !== 0) {
-			infoSection.createEl("div", {
-				text: `Exit code: ${this.result.exitCode}`,
-				cls: "exit-code-error",
-			});
-		}
-
-		infoSection.createEl("div", {
-			text: `Executed in ${(this.result.executionTime / 1000).toFixed(
-				2
-			)}s`,
+		// Copy button (primary action)
+		const copyButton = footer.createEl("button", {
+			text: "Copy",
+			cls: "mod-cta",
 		});
+		copyButton.addEventListener("click", () => this.copyAllOutput());
 
-		// Close button
-		const buttonContainer = contentEl.createDiv({
-			cls: "button-container",
-		});
-		const closeButton = buttonContainer.createEl("button", {
+		// Close button (secondary)
+		const closeButton = footer.createEl("button", {
 			text: "Close",
 		});
 		closeButton.addEventListener("click", () => this.close());
+	}
+
+	copyAllOutput() {
+		let fullOutput = "";
+		if (this.result.stdout) {
+			fullOutput += "=== Output ===\n" + this.result.stdout + "\n\n";
+		}
+		if (this.result.stderr) {
+			fullOutput += "=== Error ===\n" + this.result.stderr + "\n\n";
+		}
+		fullOutput += `Exit code: ${this.result.exitCode}\n`;
+		fullOutput += `Executed in ${(this.result.executionTime / 1000).toFixed(
+			2
+		)}s`;
+
+		navigator.clipboard.writeText(fullOutput);
+		new Notice("Output copied to clipboard");
 	}
 
 	onClose() {

@@ -5,72 +5,124 @@
 	width: 90vw;
 }
 
-.codeblock-runner-output .output-container {
-	margin: 1em 0;
-}
-
-.codeblock-runner-output .output-section {
+/* Header with title and badge */
+.codeblock-runner-output .output-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	margin-bottom: 1.5em;
 }
 
-.codeblock-runner-output .output-section h3 {
-	margin: 0 0 0.5em 0;
-	font-size: 1em;
-	font-weight: 600;
-	color: var(--text-normal);
+.codeblock-runner-output .output-header h2 {
+	margin: 0;
+	font-size: 1.4em;
 }
 
-.codeblock-runner-output .output-section pre {
+.codeblock-runner-output .output-status-badge {
+	padding: 0.4em 0.75em;
+	border-radius: 12px;
+	font-size: 0.8em;
+	font-weight: 500;
+}
+
+.codeblock-runner-output .status-success {
+	background-color: var(--color-green);
+	color: white;
+}
+
+.codeblock-runner-output .status-error {
+	background-color: var(--color-red);
+	color: white;
+}
+
+.codeblock-runner-output .status-timeout {
+	background-color: var(--color-orange);
+	color: white;
+}
+
+/* Content area */
+.codeblock-runner-output .output-content-area {
+	margin: 1.5em 0;
+}
+
+/* Output box container */
+.codeblock-runner-output .output-box {
+	background-color: rgba(255, 255, 255, 0.05);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	padding: 14px;
+	margin-bottom: 1em;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.codeblock-runner-output .output-box:last-child {
+	margin-bottom: 0;
+}
+
+.codeblock-runner-output .output-box-error {
+	border-left: 4px solid var(--color-red);
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+.codeblock-runner-output .output-box pre {
 	margin: 0;
-	padding: 1em;
-	background-color: var(--background-primary-alt);
-	border-radius: 4px;
+	padding: 0;
 	overflow: auto;
 	max-height: 400px;
+	background: transparent;
 }
 
-.codeblock-runner-output .output-section code {
+.codeblock-runner-output .output-box code {
 	font-family: var(--font-monospace);
-	font-size: 0.9em;
+	font-size: 13px;
+	line-height: 1.5;
 	color: var(--text-normal);
-	white-space: pre-wrap;
-	word-break: break-word;
+	white-space: pre;
+	word-break: normal;
+	overflow-wrap: normal;
 }
 
-.codeblock-runner-output .output-error h3 {
-	color: var(--text-error);
-}
-
-.codeblock-runner-output .output-error pre {
-	background-color: var(--background-modifier-error);
-	border: 1px solid var(--background-modifier-error-hover);
-}
-
-.codeblock-runner-output .output-info {
-	margin-top: 1em;
-	padding: 0.5em 0;
-	font-size: 0.9em;
-	color: var(--text-muted);
-	border-top: 1px solid var(--background-modifier-border);
-}
-
-.codeblock-runner-output .output-info div {
-	margin: 0.25em 0;
-}
-
-.codeblock-runner-output .exit-code-error {
-	color: var(--text-error);
-	font-weight: 600;
-}
-
-.codeblock-runner-output .button-container {
+/* Footer with buttons */
+.codeblock-runner-output .output-footer {
 	display: flex;
 	justify-content: flex-end;
-	margin-top: 1em;
-	padding-top: 1em;
+	gap: 0.75em;
+	margin-top: 1.5em;
+	padding-top: 1.5em;
 	border-top: 1px solid var(--background-modifier-border);
 }
 
-.codeblock-runner-output .button-container button {
+.codeblock-runner-output .output-footer button {
 	padding: 0.5em 1.5em;
+	cursor: pointer;
+	border-radius: 4px;
+	font-size: 0.95em;
+}
+
+.codeblock-runner-output .output-footer button:not(.mod-cta) {
+	background-color: transparent;
+	border: 1px solid var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+.codeblock-runner-output .output-footer button:not(.mod-cta):hover {
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+/* Input Modal Styles */
+.codeblock-runner-input .modal-content {
+	max-width: 500px;
+}
+
+.codeblock-runner-input .input-button-container {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5em;
+	margin-top: 1em;
+}
+
+.codeblock-runner-input .input-button-container button {
+	padding: 0.5em 1.5em;
+	cursor: pointer;
 }

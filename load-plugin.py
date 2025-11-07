@@ -13,46 +13,66 @@ DEFAULT_VAULT = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Second 
 REQUIRED = ["manifest.json", "main.js"]
 OPTIONAL = ["styles.css"]
 
+# Expands the path to the vault out of the user's home directory
+
 
 def expand_path(p: str) -> Path:
-	return Path(os.path.expandvars(os.path.expanduser(p))).resolve()
+    return Path(os.path.expandvars(os.path.expanduser(p))).resolve()
 
 
+# Loads the manifest.json file from the source directory
 def load_manifest(src: Path) -> dict:
-	mf = src / "manifest.json"
-	if not mf.exists():
-		sys.exit(f"error: {mf} not found")
-	return json.loads(mf.read_text(encoding="utf-8"))
+    mf = src / "manifest.json"
+    if not mf.exists():
+        # Exit the program with an error message
+        sys.exit(f"error: {mf} not found")
+    # Load the manifest.json file from the source directory
+    return json.loads(mf.read_text(encoding="utf-8"))
 
 
+# Ensures that the directory exists
 def ensure_dir(d: Path) -> None:
-	d.mkdir(parents=True, exist_ok=True)
+    # Create the directory if it doesn't exist
+    d.mkdir(parents=True, exist_ok=True)
 
 
+# Copies the required and optional files from the source directory to the destination directory
 def copy_files(src: Path, dst: Path) -> None:
-	if dst.exists():
-		shutil.rmtree(dst)
-	ensure_dir(dst)
-	for name in REQUIRED + OPTIONAL:
-		s = src / name
-		if s.exists():
-			shutil.copy2(s, dst / name)
+    # Clean the dest dir if exists
+    if dst.exists():
+        shutil.rmtree(dst)
+    ensure_dir(dst)
+    # Copy the required and optional files from the source directory to the destination directory
+    for name in REQUIRED + OPTIONAL:
+        s = src / name
+        if s.exists():
+            # Copy the file to the destination directory
+            shutil.copy2(s, dst / name)
 
 
 def main(argv: list[str]) -> int:
-	vault_arg = argv[1] if len(argv) > 1 else os.environ.get("OB_VAULT", DEFAULT_VAULT)
+    # Gets the vault path from CLI or env
+    vault_arg = argv[1] if len(argv) > 1 else os.environ.get(
+        "OB_VAULT", DEFAULT_VAULT)
 
-	vault = expand_path(vault_arg)
-	src = Path(__file__).parent.resolve()
-	manifest = load_manifest(src)
-	plugin_id = manifest.get("id", src.name)
+    # expand it out
+    vault = expand_path(vault_arg)
 
-	dst = vault / ".obsidian" / "plugins" / plugin_id
-	copy_files(src, dst)
+    # Gets the source directory
+    src = Path(__file__).parent.resolve()
 
-	print(f"Copied plugin to: {dst}")
-	return 0
+    # Loads the manifest.json file from the source directory
+    manifest = load_manifest(src)
+    plugin_id = manifest.get("id", src.name)
+
+    # Gets the destination directory
+    dst = vault / ".obsidian" / "plugins" / plugin_id
+    copy_files(src, dst)
+
+    # Copies the required and optional files from the source directory to the destination directory
+    print(f"Copied plugin to: {dst}")
+    return 0
 
 
 if __name__ == "__main__":
-	raise SystemExit(main(sys.argv))
+    raise SystemExit(main(sys.argv))

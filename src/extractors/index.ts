@@ -1,38 +1,21 @@
-import { App } from "obsidian";
-import { CodeExtractor } from "./types";
+// Plugin extractor registry
+// To add support for a new plugin, import its extractor and add to the array
 
-// Registry of known plugin extractors
-// These are only used if the corresponding plugin is detected/enabled
-export const PLUGIN_EXTRACTOR_REGISTRY: CodeExtractor[] = [
-	// Code Styler plugin support
-	{
-		name: "code-styler",
-		pluginId: "code-styler", // Official plugin ID
-		detect: (el) => el.querySelector(".code-styler-line") !== null,
-		extract: (el) => {
-			const lines = el.querySelectorAll(".code-styler-line-text");
-			if (lines.length > 0) {
-				return Array.from(lines)
-					.map((line) => line.textContent || "")
-					.join("\n");
-			}
-			return "";
-		},
-	},
-	// Add more plugin extractors here as needed
-	// Example for future plugins:
-	// {
-	//   name: "another-code-plugin",
-	//   pluginId: "another-code-plugin",
-	//   detect: (el) => el.querySelector(".another-plugin-class") !== null,
-	//   extract: (el) => { ... }
-	// }
+import { App } from "obsidian";
+import { PluginExtractor } from "./types";
+import { CodeStylerExtractor } from "./code-styler";
+
+// Add new plugin extractors here
+const PLUGIN_EXTRACTORS: PluginExtractor[] = [
+	CodeStylerExtractor,
+	// Add more extractors here:
 ];
 
-export function getActiveExtractors(app: App): CodeExtractor[] {
-	const activeExtractors: CodeExtractor[] = [];
+// Gets the active extractors for the currently enabled plugins
+export function getActiveExtractors(app: App): PluginExtractor[] {
+	const activeExtractors: PluginExtractor[] = [];
 
-	for (const extractor of PLUGIN_EXTRACTOR_REGISTRY) {
+	for (const extractor of PLUGIN_EXTRACTORS) {
 		// If pluginId is specified, check if plugin is enabled
 		if (extractor.pluginId) {
 			// @ts-ignore - accessing internal API

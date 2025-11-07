@@ -1,6 +1,7 @@
 export interface CodeRunnerSettings {
-	pythonCommand: string;
 	executionTimeout: number;
+	defaultArgs: string; // Default arguments to pass to code
+	[key: string]: any; // Dynamic language-specific settings
 }
 
 export interface ExecutionResult {

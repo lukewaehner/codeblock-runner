@@ -1,6 +1,8 @@
 import { CodeRunnerSettings } from "./types";
+import { getAllLanguageSettings } from "./languages";
 
 export const DEFAULT_SETTINGS: CodeRunnerSettings = {
-	pythonCommand: "python3",
 	executionTimeout: 30,
+	defaultArgs: "",
+	...getAllLanguageSettings(), // Dynamically add language-specific settings
 };
