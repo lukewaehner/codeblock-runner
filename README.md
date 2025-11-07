@@ -105,6 +105,62 @@ Each supported language has its own configuration section where you can specify 
 
 **Python command**: The command to use for executing Python code. Default is `python3`. You can specify a full path (e.g., `/usr/local/bin/python3.11`) or a different command (e.g., `python`).
 
+#### JavaScript
+
+**Node.js command**: The command to use for executing JavaScript code. Default is `node`. You can specify a full path (e.g., `/usr/local/bin/node`) or a different command (e.g., `nodejs`).
+
+#### C
+
+**C compiler**: The C compiler to use for compiling C code. Default is `gcc`. You can specify `clang` or a full path.
+
+**C compiler flags**: Additional flags to pass to the compiler. Default is `-std=c11`. You can specify optimization flags like `-std=c11 -O2` or debugging flags like `-std=c11 -g`.
+
+#### C++
+
+**C++ compiler**: The C++ compiler to use for compiling C++ code. Default is `g++`. You can specify `clang++` or a full path.
+
+**C++ compiler flags**: Additional flags to pass to the compiler. Default is `-std=c++17`. You can specify optimization flags like `-std=c++20 -O2` or debugging flags like `-std=c++17 -g`.
+
+#### Rust
+
+**Rust compiler**: The Rust compiler to use for compiling Rust code. Default is `rustc`. You can specify a full path if needed.
+
+**Rust compiler flags**: Additional flags to pass to rustc. Default is empty. You can specify optimization flags like `-O` or edition flags like `--edition 2021`.
+
+#### TypeScript
+
+**ts-node command**: The command to use for executing TypeScript code. Default is `ts-node`. You can specify `npx ts-node` if ts-node is not globally installed, or a full path.
+
+Note: TypeScript execution requires ts-node to be installed. Install it with `npm install -g ts-node typescript` or use `npx ts-node`.
+
+#### Java
+
+**Java compiler**: The Java compiler to use for compiling Java code. Default is `javac`. You can specify a full path if needed.
+
+**Java runtime**: The Java runtime to use for executing compiled Java code. Default is `java`. You can specify a full path if needed.
+
+Note: The plugin automatically detects the class name from your code by looking for `public class ClassName`. Ensure your code has a proper class declaration.
+
+#### Go
+
+**Go command**: The Go command to use for executing Go code. Default is `go`. You can specify a full path if needed.
+
+Note: The plugin uses `go run` which automatically compiles and runs your code in one step.
+
+#### Ruby
+
+**Ruby command**: The command to use for executing Ruby code. Default is `ruby`. You can specify a full path (e.g., `/usr/local/bin/ruby`) or a different command.
+
+#### PHP
+
+**PHP command**: The command to use for executing PHP code. Default is `php`. You can specify a full path (e.g., `/usr/bin/php`) or a different command.
+
+Note: Your PHP code does not need to include the opening `<?php` tag when using inline execution, but should include it when using arguments or temp file execution.
+
+#### Shell
+
+**Shell command**: The shell to use for executing shell scripts. Default is `/bin/bash`. You can specify `/bin/zsh`, `/bin/sh`, or any other shell path.
+
 ### Keyboard shortcuts
 
 The following keyboard shortcuts are available:
@@ -118,6 +174,16 @@ The following keyboard shortcuts are available:
 The plugin currently supports the following languages:
 
 -   **Python**: Requires Python installed and in PATH (or configure path in settings)
+-   **JavaScript**: Requires Node.js installed and in PATH (or configure path in settings)
+-   **TypeScript**: Requires ts-node installed and in PATH (or configure path in settings)
+-   **Java**: Requires JDK (javac and java) installed and in PATH (or configure path in settings)
+-   **C**: Requires a C compiler (gcc or clang) installed and in PATH (or configure path in settings)
+-   **C++**: Requires a C++ compiler (g++ or clang++) installed and in PATH (or configure path in settings)
+-   **Go**: Requires Go installed and in PATH (or configure path in settings)
+-   **Rust**: Requires Rust compiler (rustc) installed and in PATH (or configure path in settings)
+-   **Ruby**: Requires Ruby installed and in PATH (or configure path in settings)
+-   **PHP**: Requires PHP installed and in PATH (or configure path in settings)
+-   **Shell**: Requires bash, zsh, or sh (typically pre-installed on Unix-based systems)
 
 Additional languages can be added by creating language executor modules. See the extensibility section below for details.
 

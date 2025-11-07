@@ -36,15 +36,6 @@ export default class CodeBlockRunner extends Plugin {
 				const codeText = code.textContent || "";
 				const lineCount = codeText.trim().split("\n").length;
 				const isSingleLine = lineCount === 1;
-				console.log(
-					"[CodeRunner] Line count:",
-					lineCount,
-					isSingleLine
-				);
-				console.log(
-					"[CodeRunner] Code text:",
-					codeText.substring(0, 200) + "..."
-				);
 
 				Object.assign(btn.style, {
 					position: "absolute",

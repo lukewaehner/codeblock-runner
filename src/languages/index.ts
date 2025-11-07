@@ -3,15 +3,31 @@
 
 import { LanguageExecutor } from "./types";
 import { PythonExecutor } from "./python";
+import { JavaScriptExecutor } from "./javascript";
+import { TypeScriptExecutor } from "./typescript";
+import { JavaExecutor } from "./java";
+import { CExecutor } from "./c";
+import { CppExecutor } from "./cpp";
+import { RustExecutor } from "./rust";
+import { GoExecutor } from "./go";
+import { RubyExecutor } from "./ruby";
+import { PHPExecutor } from "./php";
+import { ShellExecutor } from "./shell";
 
 // Add new language executors here
+// Ordered by popularity/common usage
 const LANGUAGE_EXECUTORS: LanguageExecutor[] = [
 	PythonExecutor,
-	// Import and add more languages here:
-	// CExecutor,
-	// CppExecutor,
-	// RustExecutor,
-	// JavaScriptExecutor,
+	JavaScriptExecutor,
+	TypeScriptExecutor,
+	JavaExecutor,
+	CExecutor,
+	CppExecutor,
+	GoExecutor,
+	RustExecutor,
+	RubyExecutor,
+	PHPExecutor,
+	ShellExecutor,
 ];
 
 // Build lookup map: language id -> executor
@@ -37,7 +53,7 @@ export function getAllLanguageIds(): string[] {
 }
 
 export function getAllLanguageSettings() {
-	const allSettings: Record<string, any> = {};
+	const allSettings: Record<string, string> = {};
 
 	for (const executor of LANGUAGE_EXECUTORS) {
 		if (executor.settings) {
