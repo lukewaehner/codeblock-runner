@@ -231,7 +231,7 @@ This compatibility system is extensible. Additional plugin extractors can be add
 
 ## Installation
 
-### From Obsidian Community Plugins
+### From Obsidian Community Plugins (COMING SOON WITH FEEDBACK)
 
 The plugin can be installed directly from Obsidian's community plugin browser.
 
