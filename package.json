@@ -1,6 +1,6 @@
 {
 	"name": "codeblock-runner",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Execute code blocks directly in Obsidian and view output",
 	"main": "main.js",
 	"scripts": {

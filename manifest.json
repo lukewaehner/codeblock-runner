@@ -1,7 +1,7 @@
 {
 	"id": "codeblock-runner",
 	"name": "Codeblock Runner",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Execute code blocks directly in Obsidian and view output in a modal window.",
 	"author": "Luke Waehner",
