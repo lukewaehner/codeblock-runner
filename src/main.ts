@@ -19,6 +19,7 @@ export default class CodeBlockRunner extends Plugin {
 
 		// Register markdown post processor to add "Run Code" buttons
 		this.registerMarkdownPostProcessor((el) => {
+			// Iterate each code block
 			el.querySelectorAll("pre > code").forEach((code) => {
 				const pre = code.parentElement as HTMLElement;
 				if (pre.dataset.codeRunner === "1") return;
@@ -77,6 +78,7 @@ export default class CodeBlockRunner extends Plugin {
 						// NOTE: I will add more extractors with any suggestions
 						const codeText = extractCodeFromElement(code, this.app);
 
+						// Debug logs, remove down the line
 						console.log(
 							"[CodeRunner] Final codeText length:",
 							codeText.length
@@ -146,7 +148,7 @@ export default class CodeBlockRunner extends Plugin {
 		});
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(

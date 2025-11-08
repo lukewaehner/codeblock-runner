@@ -1,5 +1,6 @@
 import { App, Modal, Setting } from "obsidian";
 
+// Modal to get user inputs (command-line args) upon shift+click run button
 export class InputModal extends Modal {
 	result: string;
 	onSubmit: (result: string) => void;

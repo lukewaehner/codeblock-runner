@@ -5,7 +5,8 @@ import { App } from "obsidian";
 import { PluginExtractor } from "./types";
 import { CodeStylerExtractor } from "./code-styler";
 
-// Add new plugin extractors here
+// NOTE:
+// Add plugin extractors here, eventually all of these should be toggles via settings
 const PLUGIN_EXTRACTORS: PluginExtractor[] = [
 	CodeStylerExtractor,
 	// Add more extractors here:
@@ -66,22 +67,8 @@ export function extractCodeFromElement(codeElement: Element, app: App): string {
 		"[CodeRunner] No plugin format detected, using standard extraction"
 	);
 
-	// Fallback: standard extraction with line number stripping
-	let codeText = codeElement.textContent ?? "";
-
-	// If line numbers are present (format: "  1|code" or "  1 code")
-	// Remove them from each line
-	const lines = codeText.split("\n");
-	const hasLineNumbers =
-		lines.length > 1 &&
-		lines.every((line) => line.match(/^\s*\d+[|\s]/) || line.trim() === "");
-
-	if (hasLineNumbers) {
-		console.log("[CodeRunner] Detected inline line numbers, stripping...");
-		codeText = lines
-			.map((line) => line.replace(/^\s*\d+[|\s]/, ""))
-			.join("\n");
-	}
+	// Fallback: standard no-plugin extracion 
+	const codeText = codeElement.textContent ?? "";
 
 	return codeText;
 }

@@ -1,6 +1,7 @@
 import { App, Modal, Notice } from "obsidian";
 import { ExecutionResult } from "../types";
 
+// Modal to display code execution output
 export class OutputModal extends Modal {
 	result: ExecutionResult;
 	language: string;
@@ -22,6 +23,7 @@ export class OutputModal extends Modal {
 			return false;
 		});
 
+		// Ctrl/Cmd + C -> copy output
 		this.scope.register(["Mod"], "c", () => {
 			this.copyAllOutput();
 			return false;
@@ -31,7 +33,7 @@ export class OutputModal extends Modal {
 		const header = contentEl.createDiv({ cls: "output-header" });
 		header.createEl("h2", { text: `Output (${this.language})` });
 
-		// Status badge (top right)
+		// Status badge
 		const statusBadge = header.createEl("span", {
 			cls: "output-status-badge",
 		});
@@ -100,6 +102,12 @@ export class OutputModal extends Modal {
 
 		navigator.clipboard.writeText(fullOutput);
 		new Notice("Output copied to clipboard");
+	}
+
+	// Potentially swap to just Stdout down the line
+	// should unspghagetti the copy logic a bit
+	copyStdout() {
+		return this.result.stdout ? this.result.stdout : this.result.stderr ? this.result.stderr : "";
 	}
 
 	onClose() {

@@ -14,6 +14,7 @@ export const CodeStylerExtractor: PluginExtractor = {
 
 	extract: (el) => {
 		// Extract text from .code-styler-line-text elements
+		// Number are stored in .code-styler-line-number elements, so ignore all
 		const lines = el.querySelectorAll(".code-styler-line-text");
 		if (lines.length > 0) {
 			return Array.from(lines)

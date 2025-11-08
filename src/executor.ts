@@ -23,11 +23,13 @@ export async function executeCode(
 	settings: CodeRunnerSettings,
 	userArgs?: string
 ): Promise<ExecutionResult> {
+	// Track runtime -> force quit infnite loops
 	const startTime = Date.now();
 
 	return new Promise((resolve) => {
 		const executor = getLanguageExecutor(language);
 
+		// Display error for unsupported languages
 		if (!executor) {
 			resolve({
 				stdout: "",
@@ -39,7 +41,7 @@ export async function executeCode(
 			return;
 		}
 
-		// Parse user arguments (space-separated)
+		// Parse user arguments space delimited 
 		const parsedArgs =
 			userArgs && userArgs.trim() ? userArgs.trim().split(/\s+/) : [];
 
@@ -47,16 +49,16 @@ export async function executeCode(
 		const customCommandKey = `${language}CustomCommand`;
 		const customCommand = settings[customCommandKey];
 
-		// If custom command is provided, use it with template substitution
+		// If a custom command is defined, prefer it over the default executor 
 		if (customCommand && customCommand.trim()) {
 			const ext =
 				executor.buildCommand(settings, code, parsedArgs)
 					.tempFileExtension || "txt";
 			const tempFile = join(
 				tmpdir(),
-				`obsidian-code-${Date.now()}.${ext}`
+				`obsidian-code-${Date.now()}.${ext}` // NOTE: change this to UUID to avoid collisions?
 			);
-			writeFileSync(tempFile, code, "utf8");
+			writeFileSync(tempFile, code, "utf8"); // Write the code to a temp file to compile
 
 			const templateVars = {
 				file: tempFile,
@@ -70,13 +72,14 @@ export async function executeCode(
 			let stderr = "";
 			let timedOut = false;
 
-			const process = spawn("/bin/sh", ["-c", command]);
+			const process = spawn("/bin/sh", ["-c", command]); // Start a process to run the custom command
 
 			const timeout = setTimeout(() => {
 				timedOut = true;
 				process.kill();
 			}, settings.executionTimeout * 1000);
 
+			// Capture stdout and stderr
 			process.stdout.on("data", (data) => {
 				stdout += data.toString();
 			});
@@ -85,6 +88,7 @@ export async function executeCode(
 				stderr += data.toString();
 			});
 
+			// Handle errors by stopping execution and timing
 			process.on("error", (error) => {
 				clearTimeout(timeout);
 				try {
@@ -123,6 +127,7 @@ export async function executeCode(
 		}
 
 		// Build command using language-specific executor
+		// Similar concept above, just replacing with custom executor
 		const commandSpec = executor.buildCommand(settings, code, parsedArgs);
 
 		let args: string[];
@@ -147,7 +152,7 @@ export async function executeCode(
 		let stderr = "";
 		let timedOut = false;
 
-		const process = spawn(command, args);
+		const process = spawn(command, args); // Create a child to run the command with default coder
 
 		// Set up timeout
 		const timeout = setTimeout(() => {

@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import { getSupportedLanguages, getAllLanguageExecutors } from "../languages";
+import { getActiveExtractors } from "../extractors";
 
 export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 	plugin: any; // Reference to CodeBlockRunner plugin
@@ -83,11 +84,11 @@ export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 								text
 									.setPlaceholder(
 										langSetting.placeholder ||
-											langSetting.defaultValue
+										langSetting.defaultValue
 									)
 									.setValue(
 										this.plugin.settings[langSetting.key] ||
-											langSetting.defaultValue
+										langSetting.defaultValue
 									)
 									.onChange(async (value) => {
 										this.plugin.settings[langSetting.key] =
@@ -100,11 +101,11 @@ export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 								text
 									.setPlaceholder(
 										langSetting.placeholder ||
-											langSetting.defaultValue
+										langSetting.defaultValue
 									)
 									.setValue(
 										this.plugin.settings[langSetting.key] ||
-											langSetting.defaultValue
+										langSetting.defaultValue
 									)
 									.onChange(async (value) => {
 										this.plugin.settings[langSetting.key] =
@@ -144,5 +145,13 @@ export class CodeBlockRunnerSettingTab extends PluginSettingTab {
 			text: "To add more languages, check the documentation or submit a request.",
 			cls: "setting-item-description",
 		});
+
+		// // Footer with plugin toggles
+		// containerEl.createEl("h3", { text: "Plugin Options" });
+		// // Create toggles for each plugin NOTE: idk what the api is ill read eventually
+		// containerEl.createEl("p");
+		// const pluginsList = getActiveExtractors(this.app);
+		// pluginsList.forEach((plugin) => {
+		// })
 	}
 }

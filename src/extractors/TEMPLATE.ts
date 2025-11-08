@@ -9,7 +9,7 @@ export const TemplateExtractor: PluginExtractor = {
 
 	// Optional: Obsidian plugin ID from the plugin's manifest.json
 	// If specified, this extractor only runs when the plugin is enabled
-	// Leave undefined to always try this extractor
+	// Leave undefined to always try this extractor, could have conflicts with others!
 	pluginId: "your-plugin-id",
 
 	// Detect if this code block uses your plugin's format
